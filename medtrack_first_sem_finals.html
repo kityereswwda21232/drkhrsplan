@@ -40,49 +40,22 @@ footer{padding:20px 0;color:var(--muted);font-size:12px}
 @media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}.grid,.days,.timegrid{grid-template-columns:1fr}.wrap{padding:16px 12px 40px}header{padding:22px 16px}}
 @media print{nav,.filter{display:none}section{display:block!important}.day,.subject{break-inside:avoid}.wrap{max-width:none}}
 </style></head>
-<body> <div id="passwordScreen" style="
-  position:fixed; inset:0; z-index:99999;
-  background:#fff8d9; display:flex;
-  align-items:center; justify-content:center;
-  font-family:Arial,sans-serif;">
-  <div style="
-    background:white; padding:30px; border-radius:18px;
-    text-align:center; width:300px; max-width:85%;">
-    <h2>MEDTRACK 🔒</h2>
-    <p>Enter your password to continue.</p>
-    <input id="pwInput" type="password"
-      placeholder="Enter password"
-      style="padding:12px;width:90%;border-radius:8px;">
-    <button onclick="unlockPlanner()"
-      style="margin-top:15px;padding:12px 20px;
-      border:0;border-radius:8px;background:#f4d66d;">
-      Unlock
-    </button>
-    <p id="pwError" style="color:red;"></p>
-  </div>
+<body>
+<!-- MEDTRACK PASSWORD SCREEN (basic client-side lock; not secure authentication) -->
+<div id="medtrackLock" style="position:fixed;inset:0;z-index:999999;background:#fff8dc;display:flex;align-items:center;justify-content:center;padding:20px;font-family:Arial,sans-serif;">
+  <form id="medtrackLockForm" style="background:#fffefa;padding:32px 26px;border-radius:20px;text-align:center;width:340px;max-width:100%;box-shadow:0 8px 30px #59491d22;">
+    <div style="font-size:32px">🔒</div>
+    <h2 style="margin:8px 0;color:#342f25">MEDTRACK</h2>
+    <p style="color:#766f60">Enter your password to open your planner.</p>
+    <input id="medtrackPasswordInput" type="password" autocomplete="current-password" placeholder="Password" style="width:100%;padding:13px;border:1px solid #eadfbf;border-radius:10px;font-size:16px;">
+    <button type="submit" style="margin-top:14px;width:100%;padding:13px;border:0;border-radius:10px;background:#f6e7a8;color:#342f25;font-weight:700;font-size:15px;cursor:pointer">Unlock planner</button>
+    <p id="medtrackPasswordError" role="alert" style="color:#b42318;min-height:20px;margin-bottom:0"></p>
+  </form>
 </div>
 
-<script>
-const MEDTRACK_PASSWORD = "Agd_123";
-
-function unlockPlanner() {
-  const entered = document.getElementById("pwInput").value;
-
-  if (entered === MEDTRACK_PASSWORD) {
-    document.getElementById("passwordScreen").remove();
-  } else {
-    document.getElementById("pwError").textContent =
-      "Incorrect password. Try again.";
-  }
-}
-
-document.getElementById("pwInput")
-  .addEventListener("keydown", function(e) {
-    if (e.key === "Enter") unlockPlanner();
-  });
-</script>
-<header><div class="top"><div class="brand">MEDTRACK / STUDY SYSTEM</div><div class="tag">FINALS· FIRST SEMESTER</div></div>
-<h1>Finals Survival Planner</h1><div class="wrap">
+<header><div class="top"><div class="brand">MEDTRACK / STUDY SYSTEM</div><div class="tag">PASTEL YELLOW · FIRST SEMESTER</div></div>
+<h1>Finals Survival Planner</h1><p class="sub">Your first-semester-only planner: short focused study blocks, daily quiz practice, topic checklists, and a finals countdown.</p></header>
+<div class="wrap">
 <div class="stats">
  <div class="stat"><span>STUDY DAYS PLANNED</span><strong id="totalDays">41</strong></div>
  <div class="stat"><span>SUBJECT AREAS</span><strong id="totalSubjects">9</strong></div>
@@ -229,4 +202,22 @@ $$('nav button').forEach(b=>b.onclick=()=>{$$('nav button').forEach(x=>x.classLi
 $$('.filter button').forEach(b=>b.onclick=()=>{$$('.filter button').forEach(x=>x.classList.toggle('active',x===b));renderDaily(b.dataset.phase)});
 $('#search').oninput=e=>renderTracker(e.target.value);
 renderExams();renderDaily();renderTracker();initQuizStudio();updateProgress();
-</script></body></html>
+</script>
+<script>
+(function () {
+  const MEDTRACK_PASSWORD = "Agd_1234";
+  const form = document.getElementById("medtrackLockForm");
+  const input = document.getElementById("medtrackPasswordInput");
+  const error = document.getElementById("medtrackPasswordError");
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    if (input.value === MEDTRACK_PASSWORD) {
+      document.getElementById("medtrackLock").remove();
+    } else {
+      error.textContent = "Incorrect password. Please try again.";
+      input.select();
+    }
+  });
+})();
+</script>
+</body></html>
