@@ -40,7 +40,47 @@ footer{padding:20px 0;color:var(--muted);font-size:12px}
 @media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}.grid,.days,.timegrid{grid-template-columns:1fr}.wrap{padding:16px 12px 40px}header{padding:22px 16px}}
 @media print{nav,.filter{display:none}section{display:block!important}.day,.subject{break-inside:avoid}.wrap{max-width:none}}
 </style></head>
-<body>
+<body> <div id="passwordScreen" style="
+  position:fixed; inset:0; z-index:99999;
+  background:#fff8d9; display:flex;
+  align-items:center; justify-content:center;
+  font-family:Arial,sans-serif;">
+  <div style="
+    background:white; padding:30px; border-radius:18px;
+    text-align:center; width:300px; max-width:85%;">
+    <h2>MEDTRACK 🔒</h2>
+    <p>Enter your password to continue.</p>
+    <input id="pwInput" type="password"
+      placeholder="Enter password"
+      style="padding:12px;width:90%;border-radius:8px;">
+    <button onclick="unlockPlanner()"
+      style="margin-top:15px;padding:12px 20px;
+      border:0;border-radius:8px;background:#f4d66d;">
+      Unlock
+    </button>
+    <p id="pwError" style="color:red;"></p>
+  </div>
+</div>
+
+<script>
+const MEDTRACK_PASSWORD = "Agd_123";
+
+function unlockPlanner() {
+  const entered = document.getElementById("pwInput").value;
+
+  if (entered === MEDTRACK_PASSWORD) {
+    document.getElementById("passwordScreen").remove();
+  } else {
+    document.getElementById("pwError").textContent =
+      "Incorrect password. Try again.";
+  }
+}
+
+document.getElementById("pwInput")
+  .addEventListener("keydown", function(e) {
+    if (e.key === "Enter") unlockPlanner();
+  });
+</script>
 <header><div class="top"><div class="brand">MEDTRACK / STUDY SYSTEM</div><div class="tag">PASTEL YELLOW · FIRST SEMESTER</div></div>
 <h1>Finals Survival Planner</h1><p class="sub">Your first-semester-only planner: short focused study blocks, daily quiz practice, topic checklists, and a finals countdown.</p></header>
 <div class="wrap">
